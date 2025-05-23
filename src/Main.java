@@ -12,5 +12,6 @@ public class Main {
 
         GameEngine game = new GameEngine(player);
         game.start();
+
     }
 }
