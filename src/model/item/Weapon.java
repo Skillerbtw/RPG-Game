@@ -1,4 +1,6 @@
-package model;
+package model.item;
+
+import model.character.Player;
 
 public class Weapon extends Item {
     private int damage;

@@ -1,9 +1,9 @@
 package controller;
 
-import model.Player;
-import model.Enemy;
-import model.Weapon;
-import model.Item;
+import model.character.Enemy;
+import model.item.Item;
+import model.character.Player;
+import model.item.Weapon;
 
 import java.util.List;
 import java.util.Scanner;

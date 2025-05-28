@@ -1,6 +1,17 @@
 package controller;
 
-import model.*;
+import model.character.Player;
+import model.character.Enemy;
+import model.character.npc.AiNpc;
+import model.character.npc.QuestGiverNpc;
+import model.item.Item;
+import model.item.Weapon;
+import model.quest.Quest;
+import model.quest.reward.GoldReward;
+import model.quest.reward.ItemReward;
+import model.quest.reward.MultiReward;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class GameEngine {
@@ -25,8 +36,6 @@ public class GameEngine {
             System.out.println("5. Spiel beenden");
             System.out.println("6. Quests anzeigen");
 
-
-
             System.out.print("> Auswahl: ");
             String input = scanner.nextLine();
 
@@ -40,29 +49,36 @@ public class GameEngine {
                     return;
                 }
                 case "6" -> player.showQuests();
-                default -> System.out.println("Ungültige Auswahl.");
+                default -> System.out.println("❌ Ungültige Auswahl.");
             }
         }
     }
 
     private void talkToNpc() {
         System.out.println("Du triffst den Mystischen Wanderer...");
-        System.out.println("Er bietet dir eine Aufgabe an:");
-        Quest quest = new Quest("Finde den roten Baum", "Suche in den nördlichen Wäldern nach dem legendären Baum.");
+
+        Quest quest = new Quest(
+                "Finde den roten Baum",
+                "Gehe in den Wald.",
+                new MultiReward(List.of(
+                        new GoldReward(50),
+                        new ItemReward(new Weapon("Waldbogen", "Ein einfacher, aber robuster Bogen", 15))
+                ))
+        );
+
         player.addQuest(quest);
-
-        AiNpc npc = new AiNpc("Mystischer Wanderer");
-        npc.interact(player);
-
-        // Beispiel: Quest automatisch abschließen nach Gespräch
+        AiNpc npc1 = new AiNpc("Mystischer Wanderer");
+        npc1.interact(player);
         player.completeQuest("Finde den roten Baum");
+
+        System.out.println("\nEin weiterer Einsiedler taucht auf...");
+        QuestGiverNpc npc2 = new QuestGiverNpc("Einsiedler", "Befrage den Einsiedler");
+        npc2.interact(player);
     }
-
-
 
     private void startCombat() {
         Enemy goblin = new Enemy("Goblin", 40, 10, 25);
-        controller.CombatSystem.startCombat(player, goblin);
+        CombatSystem.startCombat(player, goblin);
     }
 
     private void showInventory() {

@@ -1,6 +1,8 @@
-package model;
+package model.character.npc;
 
 import ai.StoryBot;
+import model.character.Player;
+
 import java.util.Scanner;
 
 public class AiNpc extends NPC {

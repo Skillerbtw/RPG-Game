@@ -1,4 +1,6 @@
-package model;
+package model.item;
+
+import model.character.Player;
 
 public class HealthPotion extends Item {
 

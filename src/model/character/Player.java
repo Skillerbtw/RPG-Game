@@ -1,4 +1,10 @@
-package model;
+package model.character;
+
+import model.quest.Journal;
+import model.quest.Quest;
+import model.quest.QuestManager;
+import model.item.Weapon;
+import model.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +14,12 @@ public class Player {
     private String name;
     private int maxHealth;
     private int currentHealth;
-    private int gold;
+    private int gold = 0;
     private List<Quest> activeQuests = new ArrayList<>();
     private List<Item> inventory;
     private Weapon equippedWeapon;
     private Journal journal = new Journal();
+    private QuestManager questManager = new QuestManager();
 
 
     // Konstruktor
@@ -56,6 +63,8 @@ public class Player {
         this.equippedWeapon = weapon;
     }
 
+    // --- Getter und Setter ---
+
     // Spielerstatus zurückgeben
     public String getStats() {
         return "Name: " + name +
@@ -63,8 +72,6 @@ public class Player {
                 "\nGold: " + gold +
                 "\nWaffe: " + (equippedWeapon != null ? equippedWeapon.getName() : "Keine");
     }
-
-    // --- Getter und Setter ---
 
     public String getName() {
         return name;
@@ -102,7 +109,7 @@ public class Player {
     public void completeQuest(String title) {
         for (Quest quest : activeQuests) {
             if (quest.getTitle().equalsIgnoreCase(title) && !quest.isCompleted()) {
-                quest.complete();
+                quest.complete(this);
                 return;
             }
         }
@@ -120,7 +127,13 @@ public class Player {
         }
     }
 
+    public QuestManager getQuestManager() {
+        return questManager;
+    }
 
+    public void addGold(int amount) {
+        gold += amount;
+    }
 
 
 }

@@ -1,6 +1,7 @@
-package model;
+package model.character.npc;
 
-import java.util.Optional;
+import model.character.Player;
+import model.item.Item;
 
 public class NPC {
 

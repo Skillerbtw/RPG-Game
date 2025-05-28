@@ -1,6 +1,9 @@
 package ai;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,14 +24,14 @@ public class StoryBot {
 
             // GPT-kompatibles Prompting für NPC-Dialog
             String jsonInput = """
-            {
-              "model": "meta-llama-3-8b-instruct",
-              "messages": [
-                {"role": "system", "content": "Du bist ein weiser, mysteriöser NPC in einem mittelalterlichen Rollenspiel. Antworte kurz, poetisch und geheimnisvoll, aber dennoch verständlich und Zielgerichtet."},
-                {"role": "user", "content": "%s"}
-              ]
-            }
-            """.formatted(playerInput);
+                    {
+                      "model": "meta-llama-3-8b-instruct",
+                      "messages": [
+                        {"role": "system", "content": "Du bist ein weiser, mysteriöser NPC in einem mittelalterlichen Rollenspiel. Antworte kurz, poetisch und geheimnisvoll, aber dennoch verständlich und Zielgerichtet."},
+                        {"role": "user", "content": "%s"}
+                      ]
+                    }
+                    """.formatted(playerInput);
 
             // Anfrage senden
             try (OutputStream os = conn.getOutputStream()) {
