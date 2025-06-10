@@ -26,38 +26,25 @@ public class GameEngine {
     }
 
     public void start() {
-        System.out.println("🎮 Willkommen im textbasierten RPG, " + player.getName() + "!");
-        System.out.println("Deine Reise beginnt...");
+        System.out.println("🎮 Willkommen im RPG, " + player.getName() + "!");
 
-        // Start der Story
         storyHandler.start(player);
 
-        while (true) {
-            System.out.println("\n=== 📍 WAS MÖCHTEST DU TUN? ===");
-            System.out.println("1. Mit einem NPC sprechen");
-            System.out.println("2. In den Kampf ziehen");
-            System.out.println("3. Inventar anzeigen");
-            System.out.println("4. Journal lesen");
-            System.out.println("5. Spiel beenden");
-            System.out.println("6. Quests anzeigen");
-
-            System.out.print("> Auswahl: ");
-            String input = scanner.nextLine();
-
-            switch (input) {
-                case "1" -> talkToNpc();
-                case "2" -> startCombat();
-                case "3" -> showInventory();
-                case "4" -> player.getJournal().printJournal();
-                case "5" -> {
-                    System.out.println("👋 Auf Wiedersehen, " + player.getName() + "!");
-                    return;
-                }
-                case "6" -> player.showQuests();
-                default -> System.out.println("❌ Ungültige Auswahl.");
-            }
+        while (!storyHandler.isFinished()) {
+            storyHandler.progress(player);
+            waitForPlayerToContinue();
         }
+        storyHandler.progress(player);
+        storyHandler.autoPlayChapter(player);
+
+
     }
+    private void waitForPlayerToContinue() {
+        System.out.println("\n(Drücke Enter, um fortzufahren...)");
+        scanner.nextLine();
+    }
+
+
 
     private void talkToNpc() {
         System.out.println("🧙 Du triffst den Mystischen Wanderer...");
@@ -72,7 +59,7 @@ public class GameEngine {
         );
 
         player.addQuest(quest);
-        AiNpc npc1 = new AiNpc("Mystischer Wanderer");
+        AiNpc npc1 = new AiNpc("Mystischer Wanderer","Du bist ein weiser, rätselhafter Waldmagier. Antworte geheimnisvoll und mit Bedacht, aber dennoch zielgerichtet und klar." );
         npc1.interact(player);
         player.completeQuest("Finde den roten Baum");
 

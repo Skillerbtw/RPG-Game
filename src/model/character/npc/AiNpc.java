@@ -5,39 +5,31 @@ import model.character.Player;
 
 import java.util.Scanner;
 
-public class AiNpc extends NPC {
+public class AiNpc extends BaseNpc {
 
-    public AiNpc(String name) {
-        super(name, null, null); // Kein fixer Dialog, KI übernimmt
+    private final String systemPrompt;
+
+    public AiNpc(String name, String systemPrompt) {
+        super(name);
+        this.systemPrompt = systemPrompt;
     }
 
     @Override
     public void interact(Player player) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n🤖 " + getName() + " ist bereit, mit dir zu sprechen.");
-        System.out.println("(Tipp: 'exit' zum Beenden, 'journal' zum Anzeigen deines Journals)");
+        System.out.println("💬 Du sprichst mit " + getName() + ". Sag etwas (\"tschüss\" zum Beenden):");
 
         while (true) {
-            System.out.print("🗨️  Du: ");
-            String input = scanner.nextLine();
+            System.out.print("> ");
+            String input = scanner.nextLine().trim();
 
-            if (input.equalsIgnoreCase("exit")) {
-                System.out.println("👋 " + getName() + ": Möge dein Weg sicher sein, Reisender.");
+            if (input.equalsIgnoreCase("tschüss") || input.equalsIgnoreCase("bye")) {
+                System.out.println(getName() + ": \"Leb wohl, Reisender.\"");
                 break;
             }
 
-            if (input.equalsIgnoreCase("journal")) {
-                player.getJournal().printJournal();
-                continue;
-            }
-
-            String response = StoryBot.ask(input);
-            System.out.println("🧙 " + getName() + ": \"" + response + "\"");
-
-            // Eintrag ins Journal
-            player.getJournal().addEntry(getName() + ": " + response);
+            String response = StoryBot.ask(input, systemPrompt);
+            System.out.println(getName() + ": \"" + response + "\"");
         }
     }
-
 }
-

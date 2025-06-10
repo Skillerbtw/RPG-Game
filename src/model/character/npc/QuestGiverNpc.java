@@ -9,7 +9,7 @@ public class QuestGiverNpc extends AiNpc {
     private final String questTitle;
 
     public QuestGiverNpc(String name, String questTitle) {
-        super(name);
+        super(name, "Du bist ein NPC, der Quests vergibt. Sei klar und direkt in deinen Anweisungen.");
         this.questTitle = questTitle;
     }
 
