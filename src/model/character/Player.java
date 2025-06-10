@@ -134,6 +134,15 @@ public class Player {
     public void addGold(int amount) {
         gold += amount;
     }
+    public boolean hasCompleted(String questTitle) {
+        for (Quest quest : activeQuests) {
+            if (quest.getTitle().equalsIgnoreCase(questTitle) && quest.isCompleted()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 }

@@ -10,6 +10,7 @@ import model.quest.Quest;
 import model.quest.reward.GoldReward;
 import model.quest.reward.ItemReward;
 import model.quest.reward.MultiReward;
+import storyline.StoryHandler;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class GameEngine {
 
     private final Scanner scanner = new Scanner(System.in);
     private final Player player;
+    private final StoryHandler storyHandler = new StoryHandler();
 
     public GameEngine(Player player) {
         this.player = player;
@@ -26,6 +28,9 @@ public class GameEngine {
     public void start() {
         System.out.println("🎮 Willkommen im textbasierten RPG, " + player.getName() + "!");
         System.out.println("Deine Reise beginnt...");
+
+        // Start der Story
+        storyHandler.start(player);
 
         while (true) {
             System.out.println("\n=== 📍 WAS MÖCHTEST DU TUN? ===");
@@ -55,7 +60,7 @@ public class GameEngine {
     }
 
     private void talkToNpc() {
-        System.out.println("Du triffst den Mystischen Wanderer...");
+        System.out.println("🧙 Du triffst den Mystischen Wanderer...");
 
         Quest quest = new Quest(
                 "Finde den roten Baum",
@@ -71,9 +76,12 @@ public class GameEngine {
         npc1.interact(player);
         player.completeQuest("Finde den roten Baum");
 
-        System.out.println("\nEin weiterer Einsiedler taucht auf...");
+        System.out.println("\n🧓 Ein weiterer Einsiedler taucht auf...");
         QuestGiverNpc npc2 = new QuestGiverNpc("Einsiedler", "Befrage den Einsiedler");
         npc2.interact(player);
+
+        // Kapitel-Fortschritt prüfen
+        storyHandler.progress(player);
     }
 
     private void startCombat() {
