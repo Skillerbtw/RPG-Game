@@ -5,31 +5,23 @@ import model.character.Player;
 
 import java.util.Scanner;
 
-public class AiNpc extends BaseNpc {
+public class AiNpc {
 
+    private final String name;
     private final String systemPrompt;
 
     public AiNpc(String name, String systemPrompt) {
-        super(name);
+        this.name = name;
         this.systemPrompt = systemPrompt;
     }
 
-    @Override
     public void interact(Player player) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("💬 Du sprichst mit " + getName() + ". Sag etwas (\"tschüss\" zum Beenden):");
+        System.out.println("💬 Sprich mit " + name + ": ");
+        System.out.print("> ");
+        String input = scanner.nextLine();
 
-        while (true) {
-            System.out.print("> ");
-            String input = scanner.nextLine().trim();
-
-            if (input.equalsIgnoreCase("tschüss") || input.equalsIgnoreCase("bye")) {
-                System.out.println(getName() + ": \"Leb wohl, Reisender.\"");
-                break;
-            }
-
-            String response = StoryBot.ask(input, systemPrompt);
-            System.out.println(getName() + ": \"" + response + "\"");
-        }
+        String response = StoryBot.ask(input, systemPrompt);
+        System.out.println(name + ": \"" + response + "\"");
     }
 }

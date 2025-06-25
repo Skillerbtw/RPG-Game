@@ -23,15 +23,25 @@ public class StoryBot {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
-            String jsonInput = """
-        {
-          "model": "meta-llama-3-8b-instruct",
-          "messages": [
-            {"role": "system", "content": "%s"},
-            {"role": "user", "content": "%s"}
-          ]
-        }
-        """.formatted(systemPrompt, playerInput);
+            // JSON sauber bauen:
+            JsonObject root = new JsonObject();
+            root.addProperty("model", "meta-llama-3-8b-instruct");
+
+            JsonArray messages = new JsonArray();
+
+            JsonObject sysMsg = new JsonObject();
+            sysMsg.addProperty("role", "system");
+            sysMsg.addProperty("content", systemPrompt);
+            messages.add(sysMsg);
+
+            JsonObject userMsg = new JsonObject();
+            userMsg.addProperty("role", "user");
+            userMsg.addProperty("content", playerInput);
+            messages.add(userMsg);
+
+            root.add("messages", messages);
+
+            String jsonInput = root.toString();
 
             OutputStream os = conn.getOutputStream();
             os.write(jsonInput.getBytes());
@@ -55,6 +65,5 @@ public class StoryBot {
             return "⚠️ Die Verbindung zur KI ist fehlgeschlagen.";
         }
     }
-
 }
 
